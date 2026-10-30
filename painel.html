@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de pré-visualização - PrimeTrack</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #060f18; color: #cbd5e1; height: 100vh; display: flex; flex-direction: column; }
+
+        .barra {
+            display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+            padding: 12px 20px; background: #0b1b2a; border-bottom: 1px solid #1c4058;
+        }
+        .barra strong { color: white; font-size: 16px; margin-right: 6px; }
+        .grupo { display: flex; gap: 6px; align-items: center; }
+        .grupo + .grupo { padding-left: 14px; border-left: 1px solid #1c4058; }
+        label, .estado { font-size: 13px; color: #94a3b8; }
+
+        button, select {
+            background: #102b40; color: #cbd5e1; border: 1px solid #1c4058;
+            border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+        }
+        button:hover, select:hover { border-color: #38bdf8; color: #38bdf8; }
+        button.ativo { background: #38bdf8; color: #0b1b2a; border-color: #38bdf8; font-weight: bold; }
+
+        .ponto { width: 9px; height: 9px; border-radius: 50%; background: #475569; display: inline-block; margin-right: 6px; }
+        .ponto.on { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+
+        .palco { flex: 1; overflow: auto; display: flex; justify-content: center; padding: 20px; }
+        .moldura {
+            width: 100%; height: 100%; background: white; border-radius: 12px;
+            overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.5);
+            transition: width .3s;
+        }
+        iframe { width: 100%; height: 100%; border: 0; background: white; }
+    </style>
+</head>
+<body>
+
+    <div class="barra">
+        <strong>⚡ Painel PrimeTrack</strong>
+
+        <div class="grupo">
+            <button data-largura="100%" class="ativo">🖥️ Computador</button>
+            <button data-largura="820px">📋 Tablet</button>
+            <button data-largura="390px">📱 Telemóvel</button>
+        </div>
+
+        <div class="grupo">
+            <label for="seccao">Página:</label>
+            <select id="seccao">
+                <option value="index.html">Início</option>
+                <option value="sobre.html">Sobre nós</option>
+                <option value="produto.html">Produto</option>
+                <option value="contactos.html">Contactos</option>
+            </select>
+        </div>
+
+        <div class="grupo">
+            <button id="auto" class="ativo">🔄 Atualização automática: ligada</button>
+            <select id="intervalo">
+                <option value="1500">1,5 s</option>
+                <option value="3000" selected>3 s</option>
+                <option value="5000">5 s</option>
+                <option value="10000">10 s</option>
+            </select>
+            <button id="agora">Atualizar agora</button>
+        </div>
+
+        <div class="grupo estado"><span class="ponto on" id="ponto"></span><span id="estado">A iniciar...</span></div>
+    </div>
+
+    <div class="palco">
+        <div class="moldura" id="moldura">
+            <iframe id="site" title="Pré-visualização do site"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const frame = document.getElementById('site');
+        const moldura = document.getElementById('moldura');
+        const seccao = document.getElementById('seccao');
+        const botaoAuto = document.getElementById('auto');
+        const intervalo = document.getElementById('intervalo');
+        const estado = document.getElementById('estado');
+        const ponto = document.getElementById('ponto');
+
+        let auto = true;
+        let timer = null;
+        let scrollY = 0;
+        let pagina = 'index.html';
+
+        // O site envia a posição do scroll; depois de cada atualização repomos
+        window.addEventListener('message', e => {
+            if (!e.data) return;
+            if (e.data.tipo === 'scroll') scrollY = e.data.y;
+            if (e.data.tipo === 'pagina' && e.data.nome !== pagina) {
+                pagina = e.data.nome; scrollY = 0; seccao.value = pagina;
+            }
+        });
+        frame.addEventListener('load', () => {
+            if (scrollY > 0) frame.contentWindow.postMessage({ tipo: 'repor', y: scrollY }, '*');
+        });
+
+        function carregar() {
+            // O parâmetro "v" força o navegador a ir buscar a versão mais recente
+            frame.src = pagina + '?v=' + Date.now();
+            const hora = new Date().toLocaleTimeString('pt-PT');
+            estado.textContent = 'Atualizado às ' + hora;
+        }
+
+        function iniciarTimer() {
+            clearInterval(timer);
+            if (auto) timer = setInterval(carregar, Number(intervalo.value));
+            ponto.classList.toggle('on', auto);
+            botaoAuto.classList.toggle('ativo', auto);
+            botaoAuto.textContent = '🔄 Atualização automática: ' + (auto ? 'ligada' : 'desligada');
+        }
+
+        // Tamanhos do ecrã
+        document.querySelectorAll('[data-largura]').forEach(b => {
+            b.addEventListener('click', () => {
+                document.querySelectorAll('[data-largura]').forEach(x => x.classList.remove('ativo'));
+                b.classList.add('ativo');
+                moldura.style.width = b.dataset.largura;
+            });
+        });
+
+        seccao.addEventListener('change', () => { pagina = seccao.value; scrollY = 0; carregar(); });
+        intervalo.addEventListener('change', iniciarTimer);
+        document.getElementById('agora').addEventListener('click', carregar);
+        botaoAuto.addEventListener('click', () => { auto = !auto; iniciarTimer(); });
+
+        carregar();
+        iniciarTimer();
+    </script>
+</body>
+</html>
