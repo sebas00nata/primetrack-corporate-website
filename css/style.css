@@ -485,3 +485,7 @@ a { text-decoration: none; color: inherit; }
     .logo small { display: none; }
     .menu a { font-size: 12px; }
 }
+
+/* ícone do autocarro no mapa (ícone da app) */
+.phone .bus { background-color: var(--azul-escuro); border-color: var(--ciano); width: 34px; height: 34px; }
+.phone .bus img { width: 20px; height: 20px; }
