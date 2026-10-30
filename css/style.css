@@ -43,7 +43,7 @@ a { text-decoration: none; color: inherit; }
     border-bottom: 1px solid #1c4058;
 }
 .logo { display: flex; align-items: center; gap: 10px; }
-.logo-icon { font-size: 28px; }
+.logo-img { width: 42px; height: 42px; }
 .logo-nome { font-size: 21px; font-weight: 700; }
 .logo small { font-size: 12px; color: var(--cinza); }
 
@@ -355,4 +355,133 @@ a { text-decoration: none; color: inherit; }
     .duas-colunas { gap: 50px; padding: 50px 24px; }
     .col-texto h1 { font-size: 38px; }
     .par-caixas, .tres-cartoes { grid-template-columns: 1fr; }
+}
+
+/* =========================================
+   ÍCONES, LOGÓTIPO E FUNDOS
+   ========================================= */
+.icone-img { width: 36px; height: 36px; display: block; }
+.mini { width: 18px; height: 18px; display: block; }
+.cartao .icone { display: block; margin-bottom: 12px; }
+.cartao .icone-img { margin: 0 auto; width: 40px; height: 40px; }
+
+/* Imagem de fundo de cada página (menos o início): fica fixa por trás do conteúdo */
+.pagina-sobre, .pagina-produto, .pagina-contactos { isolation: isolate; }
+.pagina-sobre::before, .pagina-produto::before, .pagina-contactos::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+}
+.pagina-sobre::before     { background-image: url('../img/fundos/sobre.svg'); }
+.pagina-produto::before   { background-image: url('../img/fundos/produto.svg'); }
+.pagina-contactos::before { background-image: url('../img/fundos/contactos.svg'); }
+
+/* o conteúdo fica legível por cima do fundo */
+.pagina-sobre .col-texto {
+    background: rgba(255,255,255,.88);
+    padding: 34px;
+    border-radius: 20px;
+}
+.pagina-produto .col-texto {
+    background: rgba(11,27,42,.82);
+    padding: 34px;
+    border-radius: 20px;
+    backdrop-filter: blur(2px);
+}
+.pagina-contactos .centro { background: transparent; }
+
+/* =========================================
+   TELEMÓVEL DO PRODUTO (detalhes)
+   ========================================= */
+.phone .map { height: 66%; }
+.phone .bus {
+    width: 30px; height: 30px;
+    background-color: var(--ciano);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+.phone .bus img { width: 16px; height: 16px; }
+.paragem {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--azul-escuro);
+    border: 3px solid var(--ciano);
+    border-radius: 50%;
+    z-index: 2;
+}
+.paragem em {
+    position: absolute;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    background: var(--azul-escuro);
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+.p1 { left: calc(12% - 3px); top: 72%; }
+.p2 { left: calc(12% - 3px); top: 17%; }
+.p3 { left: calc(82% - 6px); top: 17%; }
+.progresso {
+    height: 5px;
+    background: #1f3a52;
+    border-radius: 5px;
+    margin: 4px 0 10px;
+    overflow: hidden;
+}
+.progresso span {
+    display: block;
+    height: 100%;
+    width: 70%;
+    background: var(--ciano);
+    border-radius: 5px;
+    animation: encher 6s ease-in-out infinite alternate;
+}
+@keyframes encher { from { width: 25%; } to { width: 85%; } }
+
+.phone .bus-info-top { gap: 10px; }
+.phone .bus-info strong { font-size: 14px; white-space: nowrap; }
+.phone .badge-live { white-space: nowrap; }
+
+/* =========================================
+   TELEMÓVEL
+   ========================================= */
+@media (max-width: 900px) {
+    .topo { gap: 10px; padding: 12px 16px; }
+    .logo-img { width: 36px; height: 36px; }
+    .logo-nome { font-size: 19px; }
+    /* menu numa única linha, com os 4 botões do mesmo tamanho */
+    .menu { width: 100%; flex-wrap: nowrap; gap: 2px; padding: 4px; }
+    .menu a { flex: 1; text-align: center; padding: 9px 2px; font-size: 13px; white-space: nowrap; }
+
+    .split-esq, .split-dir { padding: 40px 20px; }
+    .split-esq h1 { font-size: 34px; }
+    .split-esq p { font-size: 16px; }
+    .atalho { padding: 18px 18px; gap: 14px; }
+
+    .duas-colunas { padding: 24px 16px 40px; gap: 30px; }
+    .col-texto h1 { font-size: 34px; }
+    .col-texto > p { font-size: 16px; }
+    .pagina-sobre .col-texto, .pagina-produto .col-texto { padding: 22px; }
+    .btn-grande { display: block; text-align: center; width: 100%; padding: 16px 20px; }
+
+    .phone { width: 270px; height: 500px; }
+
+    .centro { padding: 40px 16px 50px; }
+    .centro h1 { font-size: 34px; }
+    .intro { font-size: 16px; }
+    .tres-cartoes { margin-top: 30px; gap: 14px; }
+}
+@media (max-width: 380px) {
+    .logo small { display: none; }
+    .menu a { font-size: 12px; }
 }

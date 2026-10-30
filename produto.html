@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produto BussTrack - PrimeTrack Technologies</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="pagina-escura">
+<body class="pagina-escura pagina-produto">
 
     <header class="topo">
         <a href="index.html" class="logo">
-            <span class="logo-icon">⚡</span>
+            <img class="logo-img" src="img/logo.svg" alt="Logótipo PrimeTrack Technologies">
             <span class="logo-nome">PrimeTrack</span>
             <small>Technologies</small>
         </a>
@@ -30,17 +31,17 @@
 
             <div class="par-caixas">
                 <div class="caixa-escura">
-                    <h3><span class="fundo-simb">❌</span> O problema</h3>
+                    <h3><span class="fundo-simb"><img class="mini" src="img/icons/x.svg" alt=""></span> O problema</h3>
                     <p>Esperar nas paragens sem saber quando o autocarro chega.</p>
                 </div>
                 <div class="caixa-escura">
-                    <h3><span class="fundo-verde">✅</span> A solução</h3>
+                    <h3><span class="fundo-verde"><img class="mini" src="img/icons/certo.svg" alt=""></span> A solução</h3>
                     <p>Ver os autocarros no mapa e saber quando se aproximam.</p>
                 </div>
             </div>
 
-            <!-- LIGAÇÃO AO SITE DO PRODUTO: trocar o "#" pelo endereço do site do BussTrack -->
-            <a href="#" id="link-produto" class="btn-primario btn-grande">Visitar o site do BussTrack →</a>
+            <!-- LIGAÇÃO AO SITE DO PRODUTO: endereço do site do BussTrack -->
+            <a href="https://sebas00nata.github.io/BussTrack/" target="_blank" rel="noopener" id="link-produto" class="btn-primario btn-grande">Visitar o site do BussTrack →</a>
         </section>
 
         <section class="col-visual">
@@ -48,13 +49,17 @@
                 <div class="phone-top"></div>
                 <div class="map">
                     <div class="route"></div>
-                    <div class="bus"></div>
+                    <span class="paragem p1"></span>
+                    <span class="paragem p2"></span>
+                    <span class="paragem p3"><em>Samora City</em></span>
+                    <div class="bus"><img src="img/icons/autocarro-escuro.svg" alt=""></div>
                 </div>
                 <div class="bus-info">
                     <div class="bus-info-top">
-                        <strong>Linha 15 - Centro</strong>
+                        <strong>Linha 15 - Samora City</strong>
                         <span class="badge-live">AO VIVO</span>
                     </div>
+                    <div class="progresso"><span></span></div>
                     <p>Próxima paragem em <b>2 min</b></p>
                 </div>
             </div>
